@@ -19,6 +19,7 @@ package com.google.cloud.teleport.templates.common;
 import com.google.api.services.bigquery.model.TableRow;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.options.Description;
 import org.apache.beam.sdk.options.PipelineOptions;
@@ -87,6 +88,11 @@ public class JdbcConverters {
     ValueProvider<String> getKMSEncryptionKey();
 
     void setKMSEncryptionKey(ValueProvider<String> keyName);
+
+    @Description("Fields which are of type datetime in postgres table causing the pipeline to fail")
+    ValueProvider<String> getDate();
+
+    void setDate(ValueProvider<String> date);
   }
 
   /** Factory method for {@link ResultSetToTableRow}. */

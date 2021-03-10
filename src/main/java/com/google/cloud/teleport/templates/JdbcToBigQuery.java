@@ -26,11 +26,34 @@ import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.io.gcp.bigquery.TableRowJsonCoder;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.options.ValueProvider;
+import org.apache.beam.sdk.transforms.DoFn;
+import org.apache.beam.sdk.transforms.ParDo;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A template that copies data from a relational database using JDBC to an existing BigQuery table.
  */
 public class JdbcToBigQuery {
+
+  private static class ModifyDateTime extends DoFn<TableRow, TableRow> {
+
+    ValueProvider<String> dtFields;
+    public ModifyDateTime(ValueProvider<String> fields) {
+      this.dtFields = fields;
+    }
+
+    @ProcessElement
+    public void processElement(@Element TableRow row, OutputReceiver<TableRow> out) {
+      Set<String> dateTimeFields = new HashSet<>(Arrays.asList(this.dtFields.toString().split(";")));
+      for(String field: row.keySet()) {
+        if (dateTimeFields.contains(field)) row.set(field, (Long)row.get(field) / 1000);
+      }
+      out.output(row);
+    }
+  }
 
   private static ValueProvider<String> maybeDecrypt(
       ValueProvider<String> unencryptedValue, ValueProvider<String> kmsKey) {
@@ -91,6 +114,13 @@ public class JdbcToBigQuery {
                 .withQuery(options.getQuery())
                 .withCoder(TableRowJsonCoder.of())
                 .withRowMapper(JdbcConverters.getResultSetToTableRow()))
+        /*
+         * Intermediate ParDo operation to fix UNIX dateTime read from DynamicJDBCIO
+         * from milliseconds to seconds for BigQueryIO to consume
+         */
+        .apply(
+                "Convert DateTime to correct format",
+                ParDo.of(new ModifyDateTime(options.getDate())))
         /*
          * Step 2: Append TableRow to an existing BigQuery table
          */
