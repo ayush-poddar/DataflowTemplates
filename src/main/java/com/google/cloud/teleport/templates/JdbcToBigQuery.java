@@ -47,7 +47,7 @@ public class JdbcToBigQuery {
 
     @ProcessElement
     public void processElement(@Element TableRow row, OutputReceiver<TableRow> out) {
-      Set<String> dateTimeFields = new HashSet<>(Arrays.asList(this.dtFields.toString().split(";")));
+      Set<String> dateTimeFields = new HashSet<>(Arrays.asList(dtFields.toString().split(";")));
       for(String field: row.keySet()) {
         if (dateTimeFields.contains(field)) row.set(field, (Long)row.get(field) / 1000);
       }
