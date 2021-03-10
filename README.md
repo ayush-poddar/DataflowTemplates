@@ -80,7 +80,7 @@ mvn compile exec:java \
 --stagingLocation=gs://<bucket-name>/staging \
 --tempLocation=gs://<bucket-name>/temp \
 --templateLocation=gs://<bucket-name>/templates/<template-name>.json \
---runner=DataflowRunner
+--runner=DataflowRunner \
 --region=<gcp-region>"
 ```
 
