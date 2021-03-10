@@ -49,7 +49,7 @@ public class JdbcToBigQuery {
     public void processElement(@Element TableRow row, OutputReceiver<TableRow> out) {
       Set<String> dateTimeFields = new HashSet<>(Arrays.asList(dtFields.toString().split(";")));
       for(String field: row.keySet()) {
-        if (dateTimeFields.contains(field)) row.set(field, (Long)row.get(field) / 1000);
+        if (dateTimeFields.contains(field) && row.get(field) != null) row.set(field, (Long)row.get(field) / 1000);
       }
       out.output(row);
     }
