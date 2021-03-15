@@ -65,7 +65,7 @@ public class JdbcToBigQuery {
     public void processElement(@Element TableRow row, OutputReceiver<TableRow> out) {
       Set<String> timestampFields = new HashSet<>(Arrays.asList(this.timestampFields.toString().split(";")));
       Set<String> dateFields = new HashSet<>(Arrays.asList(this.dateFields.toString().split(";")));
-      Set<String> datetimeFields = new HashSet<>(Arrays.asList(this.dateFields.toString().split(";")));
+      Set<String> datetimeFields = new HashSet<>(Arrays.asList(this.datetimeFields.toString().split(";")));
 
       /*
        * Handle TIMESTAMP, DATE, DATETIME (BigQuery) fields which are causing the pipelines to fail
@@ -75,7 +75,7 @@ public class JdbcToBigQuery {
        */
       for (String field : row.keySet()) {
         if (row.get(field) == null) continue;
-
+        LOG.info("ECHO " + field + " " + row.get(field).getClass() + " " + row.get(field));
         if (timestampFields.contains(field)) row.set(field, (Long) row.get(field) / 1000);
         if (dateFields.contains(field)) row.set(field, df.format(new Date((Long) row.get(field))));
         if (datetimeFields.contains(field)) row.set(field, dtf.format(new Date((Long) row.get(field))));
