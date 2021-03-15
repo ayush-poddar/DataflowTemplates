@@ -15,21 +15,21 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-core:2.26.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-model-pipeline:2.26.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-core:2.27.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-model-pipeline:2.27.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.6.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-model-job-management:2.26.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-model-job-management:2.27.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.beam:beam-vendor-bytebuddy-1_10_8:0.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.beam:beam-vendor-grpc-1_26_0:0.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.beam:beam-vendor-guava-26_0-jre:0.1" level="project" />
     <orderEntry type="library" name="Maven: org.xerial.snappy:snappy-java:1.1.4" level="project" />
     <orderEntry type="library" name="Maven: org.tukaani:xz:1.8" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-io-google-cloud-platform:2.26.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-io-google-cloud-platform:2.27.0" level="project" />
     <orderEntry type="library" name="Maven: org.checkerframework:checker-qual:3.7.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-expansion-service:2.26.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-model-fn-execution:2.26.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-runners-java-fn-execution:2.26.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-vendor-sdks-java-extensions-protobuf:2.26.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-expansion-service:2.27.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-model-fn-execution:2.27.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-runners-java-fn-execution:2.27.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-vendor-sdks-java-extensions-protobuf:2.27.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.cloud.bigdataoss:util:2.1.6" level="project" />
     <orderEntry type="library" name="Maven: com.google.api-client:google-api-client-java6:1.30.10" level="project" />
     <orderEntry type="library" name="Maven: com.google.api-client:google-api-client-jackson2:1.30.10" level="project" />
@@ -56,15 +56,14 @@
     <orderEntry type="library" name="Maven: com.google.cloud:google-cloud-core-grpc:1.93.9" level="project" />
     <orderEntry type="library" name="Maven: com.google.cloud.datastore:datastore-v1-proto-client:1.6.3" level="project" />
     <orderEntry type="library" name="Maven: com.google.http-client:google-http-client-protobuf:1.33.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.cloud:google-cloud-pubsublite:0.4.1" level="project" />
-    <orderEntry type="library" name="Maven: com.google.cloud:google-cloud-pubsub:1.108.1" level="project" />
-    <orderEntry type="library" name="Maven: com.google.cloud:google-cloud-resourcemanager:0.118.2-alpha" level="project" />
+    <orderEntry type="library" name="Maven: com.google.cloud:google-cloud-pubsublite:0.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.flogger:flogger:0.5.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.cloud:google-cloud-pubsub:1.108.6" level="project" />
+    <orderEntry type="library" name="Maven: io.grpc:grpc-api:1.32.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.http-client:google-http-client:1.36.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.http-client:google-http-client-jackson2:1.36.0" level="project" />
     <orderEntry type="library" name="Maven: io.grpc:grpc-alts:1.32.2" level="project" />
     <orderEntry type="library" name="Maven: io.grpc:grpc-auth:1.32.2" level="project" />
-    <orderEntry type="library" name="Maven: io.grpc:grpc-api:1.32.2" level="project" />
     <orderEntry type="library" name="Maven: io.grpc:grpc-core:1.32.2" level="project" />
     <orderEntry type="library" name="Maven: io.grpc:grpc-context:1.32.2" level="project" />
     <orderEntry type="library" name="Maven: io.grpc:grpc-grpclb:1.32.2" level="project" />
@@ -74,31 +73,31 @@
     <orderEntry type="library" name="Maven: io.grpc:grpc-netty-shaded:1.32.2" level="project" />
     <orderEntry type="library" name="Maven: io.grpc:grpc-stub:1.32.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.api.grpc:grpc-google-cloud-pubsub-v1:1.90.3" level="project" />
-    <orderEntry type="library" name="Maven: com.google.api.grpc:grpc-google-cloud-pubsublite-v1:0.4.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.api.grpc:grpc-google-cloud-pubsublite-v1:0.7.0" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.51.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.51.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-tcnative-boringssl-static:2.0.33.Final" level="project" />
     <orderEntry type="library" name="Maven: com.google.api.grpc:proto-google-cloud-bigquerystorage-v1beta1:0.105.5" level="project" />
     <orderEntry type="library" name="Maven: com.google.api.grpc:proto-google-cloud-pubsub-v1:1.90.3" level="project" />
-    <orderEntry type="library" name="Maven: com.google.api.grpc:proto-google-cloud-pubsublite-v1:0.4.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.api.grpc:proto-google-cloud-pubsublite-v1:0.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.api.grpc:proto-google-common-protos:1.18.1" level="project" />
     <orderEntry type="library" name="Maven: org.threeten:threetenbp:1.4.4" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-extensions-google-cloud-platform-core:2.26.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-extensions-google-cloud-platform-core:2.27.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.cloud.bigdataoss:gcsio:2.1.6" level="project" />
     <orderEntry type="library" name="Maven: com.github.rholder:guava-retrying:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.apis:google-api-services-cloudresourcemanager:v1-rev20200720-1.30.10" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-extensions-protobuf:2.26.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-runners-google-cloud-dataflow-java:2.26.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-runners-core-construction-java:2.26.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-fn-execution:2.26.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-extensions-protobuf:2.27.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-runners-google-cloud-dataflow-java:2.27.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-runners-core-construction-java:2.27.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-fn-execution:2.27.0" level="project" />
     <orderEntry type="library" name="Maven: io.github.classgraph:classgraph:4.8.65" level="project" />
     <orderEntry type="library" name="Maven: com.google.apis:google-api-services-clouddebugger:v2-rev20200501-1.30.10" level="project" />
     <orderEntry type="library" name="Maven: com.google.apis:google-api-services-dataflow:v1b3-rev20200713-1.30.10" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-runners-direct-java:2.26.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-runners-direct-java:2.27.0" level="project" />
     <orderEntry type="library" name="Maven: args4j:args4j:2.33" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-io-jdbc:2.26.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-io-jdbc:2.27.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.beam:beam-vendor-guava-20_0:0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-io-cassandra:2.26.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-io-cassandra:2.27.0" level="project" />
     <orderEntry type="library" name="Maven: com.datastax.cassandra:cassandra-driver-mapping:3.10.2" level="project" />
     <orderEntry type="library" name="Maven: com.datastax.cassandra:cassandra-driver-core:3.6.0" level="project" />
     <orderEntry type="library" name="Maven: io.dropwizard.metrics:metrics-core:3.2.2" level="project" />
@@ -334,7 +333,7 @@
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.14" level="project" />
     <orderEntry type="library" name="Maven: org.apache.avro:avro:1.8.2" level="project" />
     <orderEntry type="library" name="Maven: com.thoughtworks.paranamer:paranamer:2.7" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-io-parquet:2.26.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.beam:beam-sdks-java-io-parquet:2.27.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.parquet:parquet-avro:1.10.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.parquet:parquet-column:1.10.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.parquet:parquet-encoding:1.10.0" level="project" />
