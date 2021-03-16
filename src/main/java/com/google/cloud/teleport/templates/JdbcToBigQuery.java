@@ -28,8 +28,12 @@ import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.options.ValueProvider;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.ParDo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,18 +42,43 @@ import java.util.Set;
  */
 public class JdbcToBigQuery {
 
+  private static final Logger LOG = LoggerFactory.getLogger(JdbcToBigQuery.class);
+
   private static class ModifyDateTime extends DoFn<TableRow, TableRow> {
 
-    ValueProvider<String> dtFields;
-    public ModifyDateTime(ValueProvider<String> fields) {
-      this.dtFields = fields;
+    ValueProvider<String> timestampFields;
+    ValueProvider<String> dateFields;
+    ValueProvider<String> datetimeFields;
+    SimpleDateFormat df; // date format
+    SimpleDateFormat dtf; // datetime format
+
+    public ModifyDateTime(ValueProvider<String> tsFields, ValueProvider<String> dFields, ValueProvider<String> dtFields) {
+      this.timestampFields = tsFields;
+      this.dateFields = dFields;
+      this.datetimeFields = dtFields;
+
+      df = new SimpleDateFormat("yyyy-MM-dd");
+      dtf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     }
 
     @ProcessElement
     public void processElement(@Element TableRow row, OutputReceiver<TableRow> out) {
-      Set<String> dateTimeFields = new HashSet<>(Arrays.asList(dtFields.toString().split(";")));
-      for(String field: row.keySet()) {
-        if (dateTimeFields.contains(field) && row.get(field) != null) row.set(field, (Long)row.get(field) / 1000);
+      Set<String> timestampFields = new HashSet<>(Arrays.asList(this.timestampFields.toString().split(";")));
+      Set<String> dateFields = new HashSet<>(Arrays.asList(this.dateFields.toString().split(";")));
+      Set<String> datetimeFields = new HashSet<>(Arrays.asList(this.datetimeFields.toString().split(";")));
+
+      /*
+       * Handle TIMESTAMP, DATE, DATETIME (BigQuery) fields which are causing the pipelines to fail
+       * TIMESTAMP -> EPOCH(TIMESTAMP) / 1000
+       * DATETIME -> EPOCH(DATE) -> 'yyyy-MM-dd hh:mm:ss; format
+       * DATE -> EPOCH(DATE) -> 'yyyy-MM-dd' format
+       */
+      for (String field : row.keySet()) {
+        if (row.get(field) == null) continue;
+        LOG.info("ECHO " + field + " " + row.get(field).getClass() + " " + row.get(field));
+        if (timestampFields.contains(field)) row.set(field, (Long) row.get(field) / 1000);
+        if (dateFields.contains(field)) row.set(field, df.format(new Date((Long) row.get(field))));
+        if (datetimeFields.contains(field)) row.set(field, dtf.format(new Date((Long) row.get(field))));
       }
       out.output(row);
     }
@@ -120,7 +149,7 @@ public class JdbcToBigQuery {
          */
         .apply(
                 "Convert DateTime to correct format",
-                ParDo.of(new ModifyDateTime(options.getDate())))
+                ParDo.of(new ModifyDateTime(options.getTimestamp(), options.getDate(), options.getDatetime())))
         /*
          * Step 2: Append TableRow to an existing BigQuery table
          */

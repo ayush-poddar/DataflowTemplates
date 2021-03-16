@@ -89,10 +89,20 @@ public class JdbcConverters {
 
     void setKMSEncryptionKey(ValueProvider<String> keyName);
 
-    @Description("Fields which are of type datetime in postgres table causing the pipeline to fail")
+    @Description("Fields which are of type DATE in source table")
     ValueProvider<String> getDate();
 
     void setDate(ValueProvider<String> date);
+
+    @Description("Fields which are of type DATETIME in source table")
+    ValueProvider<String> getDatetime();
+
+    void setDatetime(ValueProvider<String> datetime);
+
+    @Description("Fields which are of type TIMESTAMP in source table")
+    ValueProvider<String> getTimestamp();
+
+    void setTimestamp(ValueProvider<String> timestamp);
   }
 
   /** Factory method for {@link ResultSetToTableRow}. */
