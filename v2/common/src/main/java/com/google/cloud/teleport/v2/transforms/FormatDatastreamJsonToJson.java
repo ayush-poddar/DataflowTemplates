@@ -37,13 +37,13 @@ public final class FormatDatastreamJsonToJson
 
   static final Logger LOG = LoggerFactory.getLogger(FormatDatastreamJsonToJson.class);
   private String rowIdColumnName;
-  private static Map<String, String> hashedColumns = new HashMap<String, String>();
+  private Map<String, String> hashedColumns = new HashMap<String, String>();
   private boolean lowercaseSourceColumns = false;
   private String streamName;
 
   private FormatDatastreamJsonToJson() {}
 
-  public static FormatDatastreamJsonToJson create(){
+  public static FormatDatastreamJsonToJson create() {
     return new FormatDatastreamJsonToJson();
   }
 
@@ -52,8 +52,8 @@ public final class FormatDatastreamJsonToJson
     return this;
   }
 
-  public FormatDatastreamJsonToJson withLowercaseSourceColumns() {
-    this.lowercaseSourceColumns = true;
+  public FormatDatastreamJsonToJson withLowercaseSourceColumns(Boolean lowercaseSourceColumns) {
+    this.lowercaseSourceColumns = lowercaseSourceColumns;
     return this;
   }
 
@@ -80,13 +80,34 @@ public final class FormatDatastreamJsonToJson
     return this;
   }
 
+  /**
+   * Set the map of columns values to hash.
+   *
+   * @param hashedColumns The map of columns to new columns to hash.
+   */
+  public FormatDatastreamJsonToJson withHashColumnValues(
+      Map<String, String> hashedColumns) {
+    this.hashedColumns = hashedColumns;
+    return this;
+  }
+
   @ProcessElement
   public void processElement(ProcessContext c) {
 
     JsonNode record = null;
 
     try {
-       record = new ObjectMapper().readTree(c.element());
+      record = new ObjectMapper().readTree(c.element());
+
+      // check if payload is null/empty
+      // re: b/183584054
+      if (record.get("payload") == null) {
+        String changeType = getSourceMetadata(record, "change_type");
+        if (changeType == null || changeType.toLowerCase() != "delete") {
+          LOG.warn("Empty payload in datastream record. and change type is not delete. ignoring.");
+          return;
+        }
+      }
     } catch (IOException e) {
       LOG.error("Issue parsing JSON record. Unable to continue.", e);
       throw new RuntimeException(e);
@@ -94,19 +115,6 @@ public final class FormatDatastreamJsonToJson
 
     ObjectMapper mapper = new ObjectMapper();
     ObjectNode outputObject = mapper.createObjectNode();
-
-    JsonNode payload = record.get("payload");
-    Iterator<String> dataKeys = payload.getFieldNames();
-
-    while (dataKeys.hasNext()){
-      String key = dataKeys.next();
-
-      if (this.lowercaseSourceColumns) {
-        outputObject.put(key.toLowerCase(), payload.get(key));
-      } else {
-        outputObject.put(key, payload.get(key));
-      }
-    }
 
     // General DataStream Metadata
     String sourceType = getSourceType(record);
@@ -137,8 +145,22 @@ public final class FormatDatastreamJsonToJson
       outputObject.put("_metadata_tx_id", getSourceMetadata(record, "tx_id"));
     }
 
-    // Hash columns supplied to be hashed
-    applyHashToColumns(payload, outputObject);
+    JsonNode payload = record.get("payload");
+    if (payload != null) {
+      Iterator<String> dataKeys = payload.getFieldNames();
+
+      while (dataKeys.hasNext()) {
+        String key = dataKeys.next();
+
+        if (this.lowercaseSourceColumns) {
+          outputObject.put(key.toLowerCase(), payload.get(key));
+        } else {
+          outputObject.put(key, payload.get(key));
+        }
+      }
+      // Hash columns supplied to be hashed
+      applyHashToColumns(payload, outputObject);
+    }
 
     // All Raw Metadata
     outputObject.put("_metadata_source", getSourceMetadata(record));
@@ -163,16 +185,26 @@ public final class FormatDatastreamJsonToJson
     return sourceType;
   }
 
-  private long getMetadataTimestamp(JsonNode record) {
-    long unixTimestampMilli = record.get("read_timestamp").getLongValue();
-    return unixTimestampMilli / 1000;
+  private String getMetadataTimestamp(JsonNode record) {
+    if (record.get("read_timestamp").isLong()) {
+      long unixTimestampMilli = record.get("read_timestamp").getLongValue();
+      long unixTimestampSec = unixTimestampMilli / 1000;
+
+      return String.valueOf(unixTimestampSec);
+    }
+    String timestamp = record.get("read_timestamp").getTextValue();
+    return timestamp;
   }
 
-  private long getSourceTimestamp(JsonNode record) {
-    long unixTimestampMilli = record.get("source_timestamp").getLongValue();
-    long unixTimestampSec = unixTimestampMilli / 1000;
+  private String getSourceTimestamp(JsonNode record) {
+    if (record.get("source_timestamp").isLong()) {
+      long unixTimestampMilli = record.get("source_timestamp").getLongValue();
+      long unixTimestampSec = unixTimestampMilli / 1000;
 
-    return unixTimestampSec;
+      return String.valueOf(unixTimestampSec);
+    }
+    String timestamp = record.get("source_timestamp").getTextValue();
+    return timestamp;
   }
 
   private String getSourceMetadata(JsonNode record, String fieldName) {

@@ -69,9 +69,12 @@ public class SpannerRecordConverter {
           break;
         case LONG:
           if (spannerType.equals("TIMESTAMP")) {
-            Timestamp ts = row.getTimestamp(fieldName);
-            long microSeconds = TimeUnit.SECONDS.toMicros(ts.getSeconds())
-                + TimeUnit.NANOSECONDS.toMicros(ts.getNanos());
+            long microSeconds=0L;
+            if (!nullValue) {
+              Timestamp ts = row.getTimestamp(fieldName);
+              microSeconds = TimeUnit.SECONDS.toMicros(ts.getSeconds())
+                  + TimeUnit.NANOSECONDS.toMicros(ts.getNanos());
+            }
             builder.set(field, nullValue ? null : microSeconds);
           } else {
             builder.set(field, nullValue ? null : row.getLong(fieldName));
@@ -94,7 +97,8 @@ public class SpannerRecordConverter {
               field, nullValue ? null : ByteBuffer.wrap(row.getBytes(fieldName).toByteArray()));
           break;
         case STRING:
-          if (Pattern.matches("STRING\\((?:MAX|[0-9]+)\\)", spannerType)) {
+          if (Pattern.matches("STRING\\((?:MAX|[0-9]+)\\)", spannerType)
+              || spannerType.equals("JSON")) {
             builder.set(field, nullValue ? null : row.getString(fieldName));
           } else if (spannerType.equals("TIMESTAMP")) {
             builder.set(field, nullValue ? null : row.getTimestamp(fieldName).toString());
@@ -176,7 +180,8 @@ public class SpannerRecordConverter {
                 }
               case STRING:
                 {
-                  if (Pattern.matches("ARRAY<STRING\\((?:MAX|[0-9]+)\\)>", spannerType)) {
+                  if (Pattern.matches("ARRAY<STRING\\((?:MAX|[0-9]+)\\)>", spannerType)
+                      || spannerType.equals("ARRAY<JSON>")) {
                     builder.set(field, nullValue ? null : row.getStringList(fieldName));
                   } else if (spannerType.equals("ARRAY<TIMESTAMP>")) {
                     if (nullValue) {
